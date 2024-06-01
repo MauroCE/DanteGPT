@@ -241,6 +241,9 @@ if __name__ == "__main__":
         loss.backward()
         optimizer.step()
 
+    # Save model
+    torch.save(model.state_dict(), "/models/gpt_divina_commedia/model.pth")
+
     # generate from the model
-    context = torch.zeros((1, 1), dtype=torch.long, device=device)
-    print(int2str(gpt.generate(context, max_new_tokens=500, context_size=block_size)[0].tolist()))
+    # context = torch.zeros((1, 1), dtype=torch.long, device=device)
+    # print(int2str(gpt.generate(context, max_new_tokens=500, context_size=block_size)[0].tolist()))
