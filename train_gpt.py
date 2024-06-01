@@ -70,7 +70,7 @@ if __name__ == "__main__":
                 validation_data=val_data,
                 eval_iters=eval_iters, context_size=block_size,
                 batch_size=batch_size)
-            print(f"step {iter} train loss: {losses['train']:.4f} val loss: {losses['val']:.4f}")
+            print(f"step {iteration} train loss: {losses['train']:.4f} val loss: {losses['val']:.4f}")
 
         # sample a batch of data
         xb, yb = get_batch(split="train",
