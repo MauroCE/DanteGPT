@@ -168,3 +168,5 @@ class Model1(nn.Module):
             idx_next = torch.multinomial(probs, num_samples=1)  # Sample using the probabilities (B, 1)
             idx = torch.cat((idx, idx_next), dim=1)  # append the sampled index to the running sequence (B, T+1)
         return idx
+
+

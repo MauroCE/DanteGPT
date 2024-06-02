@@ -1,3 +1,4 @@
+import time
 import torch
 import pickle
 from gpt import Model1, estimate_loss, get_batch
@@ -10,7 +11,7 @@ if __name__ == "__main__":
     batch_size = 64
     block_size = 256
     max_iters = 5000
-    eval_interval = 500
+    eval_interval = 100
     learning_rate = 3e-4
     eval_iters = 200
     n_embd = 384  # each head is 384//6 = 64 dimensional, which is standard
@@ -60,7 +61,11 @@ if __name__ == "__main__":
     optimizer = torch.optim.AdamW(gpt.parameters(), lr=1e-3)
 
     # Store losses
-    losses = []
+    training_losses = []
+    validation_losses = []
+
+    # Store initial time
+    start_time = time.time()
 
     # Training loop
     for iteration in range(max_iters):
@@ -75,6 +80,8 @@ if __name__ == "__main__":
                 eval_iters=eval_iters, context_size=block_size,
                 batch_size=batch_size)
             print(f"step {iteration} train loss: {losses['train']:.4f} val loss: {losses['val']:.4f}")
+            validation_losses.append(losses['val'])
+            print("\tTime passed: ", time.time() - start_time)
 
         # sample a batch of data
         xb, yb = get_batch(split="train",
@@ -85,14 +92,22 @@ if __name__ == "__main__":
 
         # evaluate the loss
         logits, loss = model(idx=xb, device=device, targets=yb)
-        losses.append(loss.item())
+        training_losses.append(loss.item())
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         optimizer.step()
 
     # Save model
     torch.save(model.state_dict(), "models/model1.pth")
-    with open("losses/model1.pkl", "wb") as file:
-        pickle.dump(losses, file)
+    with open("losses/model1_training.pkl", "wb") as file:
+        pickle.dump(training_losses, file)
+    with open("losses/model1_validation.pkl", "wb") as file:
+        pickle.dump(validation_losses, file)
+
+    # Save final time
+    total_time = time.time() - start_time
+    print("Total time: ", total_time)
+    with open("timings/model1.pkl", "wb") as file:
+        pickle.dump([total_time], file)
 
 
