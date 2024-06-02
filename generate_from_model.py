@@ -1,5 +1,5 @@
 import torch
-from gpt import GPT
+from gpt import Model1
 
 
 if __name__ == "__main__":
@@ -26,7 +26,7 @@ if __name__ == "__main__":
     vocab_size = len(vocabulary)
 
     # Model
-    model = GPT(
+    model = Model1(
         n_emb=n_embd,
         num_heads=n_head,
         context_size=block_size,
@@ -34,7 +34,7 @@ if __name__ == "__main__":
         vocabulary_size=vocab_size,
         num_layers=n_layers)
 
-    PATH = "models/gpt_divina_commedia.pth"
+    PATH = "models/model1.pth"
 
     state_dict = torch.load(PATH)
     model.load_state_dict(state_dict)
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     str2int = lambda string: [str_to_int[character] for character in string]  # string --> list(int)
     int2str = lambda int_list: ''.join([int_to_str[integer] for integer in int_list])  # list(int) --> string
     with torch.no_grad():
-        input_text = "Verona"
+        input_text = "Virgilio"
         context = torch.tensor(str2int(input_text), device=device).view(1, -1)
         indices = model.generate(context, device=device, max_new_tokens=500, context_size=block_size)[0].tolist()
         output_text = int2str(indices)

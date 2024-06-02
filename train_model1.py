@@ -1,5 +1,6 @@
 import torch
-from gpt import GPT, estimate_loss, get_batch
+import pickle
+from gpt import Model1, estimate_loss, get_batch
 
 
 if __name__ == "__main__":
@@ -46,7 +47,7 @@ if __name__ == "__main__":
     val_data = data[n:]    # 10% validation
 
     # Instantiate model and send params to device
-    model = GPT(
+    model = Model1(
         n_emb=n_embd,
         num_heads=n_head,
         context_size=block_size,
@@ -57,6 +58,9 @@ if __name__ == "__main__":
 
     # Adam optimizer, as usual
     optimizer = torch.optim.AdamW(gpt.parameters(), lr=1e-3)
+
+    # Store losses
+    losses = []
 
     # Training loop
     for iteration in range(max_iters):
@@ -81,9 +85,14 @@ if __name__ == "__main__":
 
         # evaluate the loss
         logits, loss = model(idx=xb, device=device, targets=yb)
+        losses.append(loss.item())
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
         optimizer.step()
 
     # Save model
-    torch.save(model.state_dict(), "models/gpt_divina_commedia.pth")
+    torch.save(model.state_dict(), "models/model1.pth")
+    with open("losses/model1.pkl", "wb") as file:
+        pickle.dump(losses, file)
+
+

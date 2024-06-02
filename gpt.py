@@ -114,7 +114,8 @@ class Block(nn.Module):
         return x
 
 
-class GPT(nn.Module):
+class Model1(nn.Module):
+    """GPT2-like model, almost identical to Andrej Karpathy's MakeMore series."""
 
     def __init__(self, n_emb, num_heads, context_size, dropout_prop, vocabulary_size, num_layers):
         """GPT model similar to ChatGPT and inspired by Andrej Karpathy's MakeMore series."""

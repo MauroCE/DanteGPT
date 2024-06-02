@@ -20,4 +20,24 @@ Model 1 is pretty much identical to nanoGPT in the MakeMore series by Andrej Kar
 <img src="images/model1.png" height="300">
 </p>
 
+After training the model for `5000` iterations, this is the first 500 characters that it generated from `Virgilio`. It does very much resemble the Italian language at that time and even has some rhymes :) 
+```text
+Virgilio
+fosse che sempre la gente a costa parte
+sovra 'l quale il fé chiaro chiude,
+  ma però che non mi fia desse resplende,
+che di lui dicesse a Dio: '   Bonedes   '
+al maestro suo per lui vostro menie!
+  Qui vivi mi cinto in basso a questo carto
+per lo novo che 'ntelletto tu deschiere
+sen vanno grazie sì fatta brevi,
+che sien vuole esser non chi eren martìri.
+  Ma dimmi, dove sien padri vere,
+ch'i' son morti la pietade al chiostro
+più alto che stelle novità reschiere.
+  Ma voi che sappi che sì s'inn
+```
+
+
+
 
