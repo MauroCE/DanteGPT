@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
+from dataclasses import dataclass
 
 
 def get_batch(split, training_data, validation_data, dev, context_size, batch_size):
@@ -117,9 +118,16 @@ class Block(nn.Module):
 class Model1(nn.Module):
     """GPT2-like model, almost identical to Andrej Karpathy's MakeMore series."""
 
-    def __init__(self, n_emb, num_heads, context_size, dropout_prop, vocabulary_size, num_layers):
+    def __init__(self, config):
         """GPT model similar to ChatGPT and inspired by Andrej Karpathy's MakeMore series."""
         super().__init__()
+        # Grab variables that we need
+        n_emb = config.n_emb
+        num_heads = config.num_heads
+        context_size = config.context_size
+        dropout_prop = config.dropout_prop
+        vocabulary_size = config.vocabulary_size
+        num_layers = config.num_layers
         # Tokens read off the logits for the next token from a lookup table
         # Token embedding table has size (vocab_size, vocab_size)
         # The way it works is that the input, say 24 (the first one in xb above) will take the 24th row of this
@@ -170,3 +178,14 @@ class Model1(nn.Module):
         return idx
 
 
+@dataclass
+class GPTConfig1:
+    """Settings for Model1."""
+    batch_size: int = 64
+    context_size: int = 256
+    n_emb: int = 384  # each head is 384//6 = 64 dimensional, which is standard
+    num_layers: int = 6
+    num_heads: int = 6
+    dropout_prop: float = 0.2  # 20% of neurons are dropped out
+    device: str = 'mps' if torch.backends.mps.is_available() else 'cpu'
+    vocabulary_size: int = 68

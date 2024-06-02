@@ -1,27 +1,29 @@
 import time
 import torch
 import pickle
-from gpt import Model1, estimate_loss, get_batch
+from gpt import Model1, estimate_loss, get_batch, GPTConfig1
 
 
 if __name__ == "__main__":
     torch.manual_seed(333)  # reproducibility
 
     # Settings
-    batch_size = 64
-    block_size = 256
+    config = GPTConfig1
+    config.batch_size = 64
+    config.context_size = 256
+    config.n_emb = 384
+    config.num_layers = 6
+    config.num_heads = 6
+    config.dropout_prop = 0.2
+    config.device = 'mps' if torch.backends.mps.is_available() else 'cpu'
+
     max_iters = 5000
-    eval_interval = 100
+    eval_interval = 500
     learning_rate = 3e-4
     eval_iters = 200
-    n_embd = 384  # each head is 384//6 = 64 dimensional, which is standard
-    n_layers = 6
-    n_head = 6
-    dropout = 0.2  # 20% of neurons are dropped out
 
     # Device (this works for mac silicons, use cuda for nvidia gpus)
-    device = 'mps' if torch.backends.mps.is_available() else 'cpu'
-    print("DEVICE: ", device)
+    print("DEVICE: ", config.device)
 
     # Read divina commedia
     with open('data/commedia.txt', 'r', encoding='utf-8') as f:
@@ -48,14 +50,8 @@ if __name__ == "__main__":
     val_data = data[n:]    # 10% validation
 
     # Instantiate model and send params to device
-    model = Model1(
-        n_emb=n_embd,
-        num_heads=n_head,
-        context_size=block_size,
-        dropout_prop=dropout,
-        vocabulary_size=vocab_size,
-        num_layers=n_layers)
-    gpt = model.to(device)
+    model = Model1(config)
+    gpt = model.to(config.device)
 
     # Adam optimizer, as usual
     optimizer = torch.optim.AdamW(gpt.parameters(), lr=1e-3)
@@ -75,10 +71,10 @@ if __name__ == "__main__":
             losses = estimate_loss(
                 gpt_model=model,
                 training_data=train_data,
-                dev=device,
+                dev=config.device,
                 validation_data=val_data,
-                eval_iters=eval_iters, context_size=block_size,
-                batch_size=batch_size)
+                eval_iters=eval_iters, context_size=config.context_size,
+                batch_size=config.batch_size)
             print(f"step {iteration} train loss: {losses['train']:.4f} val loss: {losses['val']:.4f}")
             validation_losses.append(losses['val'])
             print("\tTime passed: ", time.time() - start_time)
@@ -87,11 +83,11 @@ if __name__ == "__main__":
         xb, yb = get_batch(split="train",
                            training_data=train_data,
                            validation_data=val_data,
-                           dev=device,
-                           context_size=block_size, batch_size=batch_size)
+                           dev=config.device,
+                           context_size=config.context_size, batch_size=config.batch_size)
 
         # evaluate the loss
-        logits, loss = model(idx=xb, device=device, targets=yb)
+        logits, loss = model(idx=xb, device=config.device, targets=yb)
         training_losses.append(loss.item())
         optimizer.zero_grad(set_to_none=True)
         loss.backward()
@@ -109,5 +105,3 @@ if __name__ == "__main__":
     print("Total time: ", total_time)
     with open("timings/model1.pkl", "wb") as file:
         pickle.dump([total_time], file)
-
-
