@@ -3,10 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chatbot</title>
+    <title>Chat with DanteGPT</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .chat-container {
+            text-align: center;
         }
         #chatbox {
             width: 500px;
@@ -14,22 +23,52 @@
             border: 1px solid #ccc;
             padding: 10px;
             overflow-y: scroll;
-            margin-bottom: 10px;
+            margin: 10px auto;
+            background-color: #fff;
         }
         #user-input {
-            width: 400px;
+            width: 380px;
             padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
         #send-button {
-            padding: 10px;
+            padding: 10px 20px;
+            margin-left: 10px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #send-button:hover {
+            background-color: #45a049;
+        }
+        .message {
+            margin: 5px 0;
+        }
+        .user-message {
+            text-align: right;
+            color: blue;
+        }
+        .bot-message {
+            text-align: left;
+            color: green;
+        }
+        .dante-image {
+            max-width: 150px;
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
-    <h1>Chat with DanteGPT</h1>
-    <div id="chatbox"></div>
-    <input type="text" id="user-input" placeholder="Type your message here">
-    <button id="send-button">Send</button>
+    <div class="chat-container">
+        <img src="{{ url_for('static', filename='dante_robot.png') }}" alt="Dante Robot" class="dante-image">
+        <h1>Chat with DanteGPT</h1>
+        <div id="chatbox"></div>
+        <input type="text" id="user-input" placeholder="Type your message here">
+        <button id="send-button">Send</button>
+    </div>
 
     <script>
         document.getElementById('send-button').addEventListener('click', function() {
@@ -37,7 +76,7 @@
             if (userInput.trim() === '') return;
 
             let chatbox = document.getElementById('chatbox');
-            chatbox.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
+            chatbox.innerHTML += `<p class="message user-message"><strong>You:</strong> ${userInput}</p>`;
 
             fetch('/generate', {
                 method: 'POST',
@@ -48,7 +87,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                chatbox.innerHTML += `<p><strong>DanteGPT:</strong> ${data.response}</p>`;
+                chatbox.innerHTML += `<p class="message bot-message"><strong>DanteGPT:</strong> ${data.response}</p>`;
                 chatbox.scrollTop = chatbox.scrollHeight;
             });
 
