@@ -26,11 +26,11 @@ class Chatbot:
 
     def chat(self):
         """Starts a chat with the bot."""
-        print("Hey, I'm DanteGPT. Message me, or type 'exit' to end the conversation.")
+        print("Ciao, sono DanteGPT. Scrivi qualcosa, o digita 'exit' per finire la conversazione.")
         while True:
-            user_input = input("You: ")
+            user_input = input("Tu: ")
             if user_input.lower() == 'exit':
-                print("DanteGPT: Goodbye!")
+                print("DanteGPT: Addio!")
                 break
 
             context = torch.tensor(self.str2int(user_input), device=self.config.device).view(1, -1)
