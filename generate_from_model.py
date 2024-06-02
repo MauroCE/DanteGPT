@@ -47,6 +47,11 @@ if __name__ == "__main__":
     str2int = lambda string: [str_to_int[character] for character in string]  # string --> list(int)
     int2str = lambda int_list: ''.join([int_to_str[integer] for integer in int_list])  # list(int) --> string
     with torch.no_grad():
-        context = torch.zeros((1, 1), dtype=torch.long, device=device)
-        text = model.generate(context, device=device, max_new_tokens=500, context_size=block_size)[0].tolist()
-        print(int2str(text))
+        input_text = "Verona"
+        context = torch.tensor(str2int(input_text), device=device).view(1, -1)
+        indices = model.generate(context, device=device, max_new_tokens=500, context_size=block_size)[0].tolist()
+        output_text = int2str(indices)
+        print(output_text)
+        with open(f"data/outputs/output_for_input_{input_text}.txt", "w") as file:
+            file.write(output_text)
+
