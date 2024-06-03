@@ -44,7 +44,7 @@ Currently, the model is overfitting, which makes sense given a lot of the design
 </p>
 
 ### Model 2
-The second model differs from Model1 in only two ways: it uses a GeLU activation function and it implements Flash attention.
+The second model differs from Model1 in only two ways: it uses a GeLU activation function and it implements Flash attention. Importantly, inside flash attention it also uses a dropout of `0.2` at training time.
 
 <p align="center">
 <img src="images/model2.png" width="650">
@@ -56,4 +56,4 @@ The second model differs from Model1 in only two ways: it uses a GeLU activation
 2. GeLU activation functions: ReLU suffers from the problem of "dead ReLU" neurons, meaning that a large portion of the network might not be doing any learning. GeLU has a small curvature (and thug gradient) everywhere, potentially allowing more efficient learning.
 3. [Cope](https://arxiv.org/abs/2405.18719) (Contextual Position Encoding): standard positional encoding simply encodes the position of a token in the context, whereas this allows for higher level of abstractions, e.g. can represent the count of words, verbs, sentences and so on.
 4. Various simplification mechanisms, based on [this](https://arxiv.org/pdf/2311.01906) and potentially [this](https://arxiv.org/abs/2403.17887) or even [this](https://arxiv.org/pdf/2401.17948) paper. For example removing some residual connections and LayerNorms.
-5. Swi
+5. Quantization for speed up and lighter memory.
