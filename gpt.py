@@ -105,9 +105,9 @@ class MultiHeadFlashAttention(nn.Module):
         self.head_latent_dim = head_latent_dim
         assert (n_emb // num_heads) == head_latent_dim, "Head latent dimension must be n_emb // num_heads."
         # Linear projections for key, query and value, for all heads at once (see NanoGPT)
-        self.proj_attn = nn.Linear(n_emb, 3*num_heads*head_latent_dim)  # I do it differently from Karpathy
+        self.proj_attn = nn.Linear(n_emb, 3*num_heads*head_latent_dim, bias=False)  # I do it differently from Karpathy
         # Linear projection of the output
-        self.proj_out = nn.Linear(n_emb, n_emb)
+        self.proj_out = nn.Linear(n_emb, n_emb, bias=False)
         # Store dropout rate
         self.dropout_prop = dropout_prop
         # Dropout after the linear projection of the outputs of all heads
@@ -216,8 +216,7 @@ class Model1(nn.Module):
         # The logits here are like the scores for the next token in the sequence
         tok_emb = self.token_embedding_table(idx)  # (B, T, C=embedding_dimension), these re token embeddings now.
         pos_emb = self.position_embedding_table(torch.arange(T, device=device))  # (T, C)
-        x = tok_emb + pos_emb  # (B, T, C)
-        x = self.blocks(x)  # (B, T, C)
+        x = self.blocks(tok_emb + pos_emb)  # (B, T, C) --> (B, T, C)
         _logits = self.lm_head(x)  # (B, T, vocab_size)
 
         if targets is None:
@@ -225,8 +224,7 @@ class Model1(nn.Module):
         else:
             B, T, C = _logits.shape
             _logits = _logits.view(B*T, C)
-            targets = targets.view(B*T)
-            _loss = F.cross_entropy(_logits, targets)
+            _loss = F.cross_entropy(_logits, targets.view(B*T))
         return _logits, _loss
 
     def generate(self, idx, max_new_tokens, context_size, device):
@@ -254,6 +252,10 @@ class GPTConfig1:
     dropout_prop: float = 0.2  # 20% of neurons are dropped out
     device: str = 'mps' if torch.backends.mps.is_available() else 'cpu'
     vocabulary_size: int = 68
+    vocabulary: tuple = ('\n', ' ', '!', '"', "'", '(', ')', ',', '-', '.', ':', ';', '?', 'A', 'B', 'C', 'D', 'E', 'F',
+                         'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Z', 'a', 'b', 'c',
+                         'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x',
+                         'y', 'z', '~', 'à', 'è', 'é', 'ì', 'ï', 'ò', 'ó', 'ù')
 
 
 class GPTConfig2Small:
@@ -266,6 +268,10 @@ class GPTConfig2Small:
     dropout_prop: float = 0.2  # 20% of neurons are dropped out
     device: str = 'mps' if torch.backends.mps.is_available() else 'cpu'
     vocabulary_size: int = 68
+    vocabulary: tuple = ('\n', ' ', '!', '"', "'", '(', ')', ',', '-', '.', ':', ';', '?', 'A', 'B', 'C', 'D', 'E', 'F',
+                         'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Z', 'a', 'b', 'c',
+                         'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x',
+                         'y', 'z', '~', 'à', 'è', 'é', 'ì', 'ï', 'ò', 'ó', 'ù')
 
 
 class Model2(nn.Module):
@@ -318,10 +324,11 @@ class Model2(nn.Module):
             _loss = F.cross_entropy(_logits, targets)
         return _logits, _loss
 
-    def generate(self, idx, max_new_tokens, context_size, device):
+    def generate(self, idx, max_new_tokens, min_new_tokens, context_size, device, idx_to_char):
         """Here `idx` is the current context of tokens in some batch, so it is `(B, T)`. This function will continue
         the generation one by one, for both the B and T dimensions. It keeps doing this until max_new_tokens."""
-        for _ in range(max_new_tokens):
+        output = ""
+        for ii in range(max_new_tokens):
             # We need to make sure that the idx that we feed into the model is the same size as the context
             idx_cond = idx[:, -context_size:]  # (B, T) --> (B, block_size)
             _logits, _loss = self(idx_cond, device=device)   # Get the predictions (calls forward(idx, targets=None))
@@ -329,4 +336,7 @@ class Model2(nn.Module):
             probs = F.softmax(_logits, dim=-1)  # Use Softmax to get probabilities. (B, C)
             idx_next = torch.multinomial(probs, num_samples=1)  # Sample using the probabilities (B, 1)
             idx = torch.cat((idx, idx_next), dim=1)  # append the sampled index to the running sequence (B, T+1)
-        return idx
+            output += idx_to_char[idx_next.item()]
+            if ii > min_new_tokens and output[-1] == '.':
+                break
+        return output

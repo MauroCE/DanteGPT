@@ -1,4 +1,5 @@
 import torch
+import pickle
 from gpt import Model1, GPTConfig1, GPTConfig2Small, Model2
 
 
@@ -6,25 +7,21 @@ class Chatbot:
 
     def __init__(self, model, config, path="models/model1_tracking.pth"):
         # Read data
-        with open('data/commedia.txt', 'r', encoding='utf-8') as f:
-            self.text = f.read()
-        vocabulary = sorted(list(set(self.text)))
+        # with open('data/commedia.txt', 'r', encoding='utf-8') as f:
+        #     self.text = f.read()
+        # vocabulary = sorted(list(set(self.text)))
         # Config
         self.config = config
         # Model
-        print("About to instantiate the model")
         self.model = model(self.config)
-        print("Model instantiated")
         self.model.load_state_dict(torch.load(path, map_location=self.config.device))
-        print("Model loaded")
         self.model.eval()  # Set the model to evaluation mode
-        print("Model to eval")
         # self.model.to(self.config.device)
         # Functions for converting to and from indices/strings
-        str_to_int = {character: integer for integer, character in enumerate(vocabulary)}
-        int_to_str = {integer: character for integer, character in enumerate(vocabulary)}
-        self.str2int = lambda string: [str_to_int[character] for character in string]  # string --> list(int)
-        self.int2str = lambda int_list: ''.join([int_to_str[integer] for integer in int_list])  # list(int) --> string
+        self.str_to_int = {character: integer for integer, character in enumerate(config.vocabulary)}
+        self.int_to_str = {integer: character for integer, character in enumerate(config.vocabulary)}
+        self.str2int = lambda string: [self.str_to_int[character] for character in string]  # string --> list(int)
+        self.int2str = lambda int_list: ''.join([self.int_to_str[integer] for integer in int_list])  # list(int) to str
 
     def chat(self):
         """Starts a chat with the bot."""

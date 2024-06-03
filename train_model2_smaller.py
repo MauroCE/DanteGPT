@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     max_iters = 10000
     eval_interval = 500
-    learning_rate = 1e-3  #5e-3  # 3e-4
+    learning_rate = 1e-2  #5e-3  # 3e-4
     eval_iters = 200
 
     # Device (this works for mac silicons, use cuda for nvidia gpus)
