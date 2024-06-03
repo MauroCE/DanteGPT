@@ -52,7 +52,9 @@ The second model differs from Model1 in only two ways: it uses a GeLU activation
 
 Model 2 is also over-fitting. I have trained exactly the same architecture but smaller model, with `context_size = 256`, `n_emb = 192`, `num_layers = 4`, and `num_heads = 4`. Training this model over 5000 iterations did not overfit as much and achieved lower final test loss.
 
-
+<p align="center">
+<img src="images/model2_smaller_train_val_losses.png" width="500">
+</p>
 
 # Moving Forward
 

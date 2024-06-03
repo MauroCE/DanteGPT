@@ -11,7 +11,7 @@ if __name__ == "__main__":
     config = GPTConfig1  # Use same configuration as Model1
     config.batch_size = 64
     config.context_size = 256
-    config.n_emb = 192
+    config.n_emb = 100
     config.num_layers = 4
     config.num_heads = 4
     config.dropout_prop = 0.2
@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     max_iters = 5000
     eval_interval = 500
-    learning_rate = 3e-4
+    learning_rate = 1e-3  # 3e-4
     eval_iters = 200
 
     # Device (this works for mac silicons, use cuda for nvidia gpus)
@@ -94,14 +94,14 @@ if __name__ == "__main__":
         optimizer.step()
 
     # Save model
-    torch.save(model.state_dict(), "models/model2_smaller.pth")
-    with open("losses/model2_smaller_training_{}.pkl".format(eval_interval), "wb") as file:
+    torch.save(model.state_dict(), "models/model2_smaller2.pth")
+    with open("losses/model2_smaller2_training_{}.pkl".format(eval_interval), "wb") as file:
         pickle.dump(training_losses, file)
-    with open("losses/model2_smaller_validation_{}.pkl".format(eval_interval), "wb") as file:
+    with open("losses/model2_smaller2_validation_{}.pkl".format(eval_interval), "wb") as file:
         pickle.dump(validation_losses, file)
 
     # Save final time
     total_time = time.time() - start_time
     print("Total time: ", total_time)
-    with open("timings/model2_smaller_{}.pkl".format(eval_interval), "wb") as file:
+    with open("timings/model2_smaller2_{}.pkl".format(eval_interval), "wb") as file:
         pickle.dump([total_time], file)
