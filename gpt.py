@@ -240,6 +240,18 @@ class GPTConfig1:
     vocabulary_size: int = 68
 
 
+class GPTConfig2Small:
+    """Settings for Model1."""
+    batch_size: int = 64
+    context_size: int = 256
+    n_emb: int = 192  # each head is 384//6 = 64 dimensional, which is standard
+    num_layers: int = 4
+    num_heads: int = 4
+    dropout_prop: float = 0.2  # 20% of neurons are dropped out
+    device: str = 'mps' if torch.backends.mps.is_available() else 'cpu'
+    vocabulary_size: int = 68
+
+
 class Model2(nn.Module):
     """We use Flash Attention (which uses an additional dropout within the attention mechanism) and GELU."""
 

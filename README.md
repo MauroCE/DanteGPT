@@ -50,6 +50,10 @@ The second model differs from Model1 in only two ways: it uses a GeLU activation
 <img src="images/model2.png" width="650">
 </p>
 
+Model 2 is also over-fitting. I have trained exactly the same architecture but smaller model, with `context_size = 256`, `n_emb = 192`, `num_layers = 4`, and `num_heads = 4`. Training this model over 5000 iterations did not overfit as much and achieved lower final test loss.
+
+
+
 # Moving Forward
 
 1. Implement [FlashAttention](https://arxiv.org/abs/2205.14135), which computes *exact* self-attention but can bring important speed ups. See [HuggingFace](https://huggingface.co/docs/text-generation-inference/en/conceptual/flash_attention) for a simple, quick explanation.
@@ -58,3 +62,5 @@ The second model differs from Model1 in only two ways: it uses a GeLU activation
 4. Various simplification mechanisms, based on [this](https://arxiv.org/pdf/2311.01906) and potentially [this](https://arxiv.org/abs/2403.17887) or even [this](https://arxiv.org/pdf/2401.17948) paper. For example removing some residual connections and LayerNorms.
 5. Quantization for speed up and lighter memory.
 6. Implement temperature in final softmax to allow for more flexibility at test time.
+7. Weight decay on weight tensors, i.e. all the tensors performing a `matmul` operation as well as the embedding, but excluding the biases and LayerNorms. This would be similar to what Andrej Karpathy has done in NanoGPT. Notice that `AdamW` can take group parameters.
+8. Learning rate decay scheduler (possibly with cosine warmup).

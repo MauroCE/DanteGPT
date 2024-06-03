@@ -1,5 +1,5 @@
 import torch
-from gpt import Model1, GPTConfig1
+from gpt import Model1, GPTConfig1, GPTConfig2Small, Model2
 
 
 class Chatbot:
@@ -14,7 +14,7 @@ class Chatbot:
         # Model
         print("About to instantiate the model")
         self.model = model(self.config)
-        print("Model instatiated")
+        print("Model instantiated")
         self.model.load_state_dict(torch.load(path, map_location=self.config.device))
         print("Model loaded")
         self.model.eval()  # Set the model to evaluation mode
@@ -44,5 +44,7 @@ class Chatbot:
 
 
 if __name__ == "__main__":
-    cb = Chatbot(Model1, GPTConfig1)
+    config = GPTConfig2Small()
+    config.device = 'cpu'
+    cb = Chatbot(Model2, config, path="models/model2_smaller.pth")
     cb.chat()
