@@ -166,3 +166,5 @@ cython_debug/
 
 # Ignore DS_Store
 .DS_Store
+
+conda_requirements.txt
