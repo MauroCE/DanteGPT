@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # Load the configuration and model
 config = GPTConfig1()
-chatbot = Chatbot(model=Model1, config=config, path="models/model1_tracking.pth")
+chatbot = Chatbot(model=Model1, config=config, path="models_heroku/model1_tracking.pth")
 
 
 @app.route('/')
