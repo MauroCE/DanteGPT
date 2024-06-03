@@ -4,18 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat with DanteGPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Times New Roman', Times, serif;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
-            background-color: #f0f0f0;
+            background: url('{{ url_for('static', filename='dante_robot.png') }}') no-repeat center center fixed;
+            background-size: cover;
             margin: 0;
         }
         .chat-container {
             text-align: center;
+            flex: 1;
         }
         #chatbox {
             width: 500px;
@@ -24,13 +28,16 @@
             padding: 10px;
             overflow-y: scroll;
             margin: 10px auto;
-            background-color: #fff;
+            background-color: #212121;
         }
         #user-input {
             width: 380px;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: #212121;
+            color: #fff;
+            font-family: 'Times New Roman', Times, serif;
         }
         #send-button {
             padding: 10px 20px;
@@ -40,31 +47,51 @@
             color: white;
             border-radius: 5px;
             cursor: pointer;
+            font-family: 'Times New Roman', Times, serif;
         }
         #send-button:hover {
             background-color: #45a049;
         }
         .message {
             margin: 5px 0;
+            background-color: #212121
         }
         .user-message {
             text-align: right;
-            color: blue;
+            color: green;
         }
         .bot-message {
             text-align: left;
-            color: green;
+            color: #E94F37;
         }
         .dante-image {
             max-width: 150px;
             margin-bottom: 20px;
         }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            width: 100%;
+        }
+        footer a {
+            color: #4CAF50;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .fa {
+            margin: 0 5px;
+        }
     </style>
 </head>
 <body>
     <div class="chat-container">
-        <img src="{{ url_for('static', filename='dante_robot.png') }}" alt="Dante Robot" class="dante-image">
-        <h1>Chat with DanteGPT</h1>
+        <!--<img src="{{ url_for('static', filename='dante_robot.png') }}" alt="Dante Robot" class="dante-image">-->
+        <!--<h1>Chat with DanteGPT</h1>-->
         <div id="chatbox"></div>
         <input type="text" id="user-input" placeholder="Type your message here">
         <button id="send-button">Send</button>
@@ -100,5 +127,12 @@
             }
         });
     </script>
+    <footer>
+        <div class="social-links">
+            <a class="github-link" href="https://github.com/MauroCE/DanteGPT"><i class="fab fa-github"></i></a>
+            <a href="https://twitter.com/MauroCamaraE"><i class="fab fa-twitter"></i></a>
+        </div>
+        <p class="copyright" styles="margin-top: 20px;">&copy; 2024 www.maurocamaraescudero.netlify.app</p>
+    </footer>
 </body>
 </html>
