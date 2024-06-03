@@ -8,4 +8,3 @@ timings/
 download_data.ipynb
 plot_losses.py
 train_model1.py
-models_heroku/
