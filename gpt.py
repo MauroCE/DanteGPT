@@ -240,7 +240,6 @@ class Model1(nn.Module):
         return idx
 
 
-
 class Model2(nn.Module):
     """We use Flash Attention (which uses an additional dropout within the attention mechanism) and GELU."""
 
@@ -305,5 +304,6 @@ class Model2(nn.Module):
             idx = torch.cat((idx, idx_next), dim=1)  # append the sampled index to the running sequence (B, T+1)
             output += idx_to_char[idx_next.item()]
             if ii > min_new_tokens and output[-1] == '.':
+                # Stop at the first period after min_new_tokens
                 break
         return output
