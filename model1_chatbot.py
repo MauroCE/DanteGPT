@@ -12,12 +12,14 @@ class Chatbot:
         # Config
         self.config = config
         # Model
+        print("About to instantiate the model")
         self.model = model(self.config)
-        state_dict = torch.load(path, map_location=self.config.device)
-        self.model.load_state_dict(state_dict)
-        self.model.load_state_dict(state_dict)
+        print("Model instatiated")
+        self.model.load_state_dict(torch.load(path, map_location=self.config.device))
+        print("Model loaded")
         self.model.eval()  # Set the model to evaluation mode
-        self.model.to(self.config.device)
+        print("Model to eval")
+        # self.model.to(self.config.device)
         # Functions for converting to and from indices/strings
         str_to_int = {character: integer for integer, character in enumerate(vocabulary)}
         int_to_str = {integer: character for integer, character in enumerate(vocabulary)}

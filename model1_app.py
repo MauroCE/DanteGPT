@@ -5,11 +5,6 @@ from gpt import GPTConfig1, Model1
 
 app = Flask(__name__)
 
-# Load the configuration and model
-config = GPTConfig1()
-config.device = 'cpu'
-chatbot = Chatbot(model=Model1, config=config, path="models_heroku/model1_tracking.pth")
-
 
 @app.route('/')
 def home():
@@ -35,4 +30,11 @@ def generate():
 
 
 if __name__ == '__main__':
+    # Load the configuration and model
+    config = GPTConfig1()
+    config.device = 'cpu'
+    chatbot = Chatbot(model=Model1, config=config, path="models_heroku/model1_tracking.pth")
+
     app.run(host='0.0.0.0', port=8080)
+
+

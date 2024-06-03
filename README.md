@@ -57,3 +57,4 @@ The second model differs from Model1 in only two ways: it uses a GeLU activation
 3. [Cope](https://arxiv.org/abs/2405.18719) (Contextual Position Encoding): standard positional encoding simply encodes the position of a token in the context, whereas this allows for higher level of abstractions, e.g. can represent the count of words, verbs, sentences and so on.
 4. Various simplification mechanisms, based on [this](https://arxiv.org/pdf/2311.01906) and potentially [this](https://arxiv.org/abs/2403.17887) or even [this](https://arxiv.org/pdf/2401.17948) paper. For example removing some residual connections and LayerNorms.
 5. Quantization for speed up and lighter memory.
+6. Implement temperature in final softmax to allow for more flexibility at test time.
