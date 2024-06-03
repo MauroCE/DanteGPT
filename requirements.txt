@@ -25,3 +25,4 @@ sympy==1.12.1
 torch==2.3.0+cpu
 typing_extensions==4.12.1
 Werkzeug==3.0.3
+requests==2.32.3
