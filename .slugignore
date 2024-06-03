@@ -1,0 +1,10 @@
+*.md
+/data/outputs/
+images/
+losses/model1_training.pkl
+losses/model1_validation.pkl
+models/model1.pth
+timings/
+download_data.ipynb
+plot_losses.py
+train_model1.py

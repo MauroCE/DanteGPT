@@ -21,6 +21,6 @@ pyparsing==3.1.2
 python-dateutil==2.9.0.post0
 six==1.16.0
 sympy==1.12.1
-torch==2.3.0
+torch==2.3.0+cpu
 typing_extensions==4.12.1
 Werkzeug==3.0.3
