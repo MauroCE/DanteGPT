@@ -1,1 +1,1 @@
-web: python3 model1_app.py
+web: python3 dante_gpt_app.py
