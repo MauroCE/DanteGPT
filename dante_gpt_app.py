@@ -38,5 +38,6 @@ if __name__ == '__main__':
     model = Model2(config)
     model.load_state_dict(torch.load(path, map_location=config.device))
     model.eval()  # Set the model to evaluation mode, not training
+
     # Launch the app
     app.run(host='0.0.0.0', port=8080, debug=False)
