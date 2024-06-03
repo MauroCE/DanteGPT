@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import torch
 from model1_chatbot import Chatbot
-from gpt import GPTConfig1, Model1
+from gpt import GPTConfig2Small, Model2  #GPTConfig1, Model1
 
 app = Flask(__name__)
 
@@ -31,9 +31,10 @@ def generate():
 
 if __name__ == '__main__':
     # Load the configuration and model
-    config = GPTConfig1()
+    config = GPTConfig2Small()
     config.device = 'cpu'
-    chatbot = Chatbot(model=Model1, config=config, path="models_heroku/model1_tracking.pth")
+    config.n_emb = 100
+    chatbot = Chatbot(model=Model2, config=config, path="models_heroku/model2_smaller2.pth")
 
     app.run(host='0.0.0.0', port=8080)
 
