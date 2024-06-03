@@ -11,6 +11,8 @@ The simplest way to download yourself this data is to open a Jupyter Notebook (i
 !wget https://dmf.unicatt.it/~della/pythoncourse18/commedia.txt --no-check-certificate
 ```
 
+# Run DanteGPT
+Simply run `dante_gpt_app.py` and start typing. One note of caution: I have used a character-level LLM using a vocabulary derived from the text itself. This means that some characters, such as `w` and `k` are not available and will break the model.
 
 # Models
 ### Model 1
