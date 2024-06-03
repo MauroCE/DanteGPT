@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 # Load the configuration and model
 config = GPTConfig1()
+config.device = 'cpu'
 chatbot = Chatbot(model=Model1, config=config, path="models_heroku/model1_tracking.pth")
 
 
