@@ -2,9 +2,11 @@ from flask import Flask, request, jsonify, render_template
 import torch
 from gpt import Model2
 from gpt_configurations import GPTConfig2
+import os
 
 
 app = Flask(__name__)
+port = int(os.environ.get("PORT", 8000))
 
 
 @app.route('/')
@@ -40,4 +42,4 @@ if __name__ == '__main__':
     model.eval()  # Set the model to evaluation mode, not training
 
     # Launch the app
-    app.run(host='0.0.0.0', port=8080, debug=False)
+    app.run(host='0.0.0.0', port=port, debug=False)
