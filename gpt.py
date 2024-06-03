@@ -1,3 +1,4 @@
+import math
 import torch
 import torch.nn as nn
 from torch.nn import functional as F
@@ -30,6 +31,21 @@ def estimate_loss(gpt_model, training_data, validation_data, dev, eval_iters, co
         out[split] = _losses.mean()
     gpt_model.train()
     return out
+
+
+def get_lr(iteration, warmup_iters, current_lr, lr_decay_iterations, min_lr):
+    """Learning rate decay using cosine warmup."""
+    # 1) linear warmup for warmup_iters steps
+    if iteration < warmup_iters:
+        return current_lr * iteration / warmup_iters
+    # 2) if it > lr_decay_iters, return min learning rate
+    if iteration > lr_decay_iterations:
+        return min_lr
+    # 3) in between, use cosine decay down to min learning rate
+    decay_ratio = (iteration - warmup_iters) / (lr_decay_iterations - warmup_iters)
+    assert 0 <= decay_ratio <= 1
+    coeff = 0.5 * (1.0 + math.cos(math.pi * decay_ratio))  # coeff ranges 0..1
+    return min_lr + coeff * (current_lr - min_lr)
 
 
 class Head(nn.Module):
