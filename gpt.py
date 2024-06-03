@@ -241,7 +241,6 @@ class Model1(nn.Module):
         return idx
 
 
-@dataclass
 class GPTConfig1:
     """Settings for Model1."""
     batch_size: int = 64
@@ -256,6 +255,8 @@ class GPTConfig1:
                          'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Z', 'a', 'b', 'c',
                          'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x',
                          'y', 'z', '~', 'à', 'è', 'é', 'ì', 'ï', 'ò', 'ó', 'ù')
+    str_to_int: dict = {character: integer for integer, character in enumerate(vocabulary)}
+    int_to_str = {integer: character for integer, character in enumerate(vocabulary)}
 
 
 class GPTConfig2Small:
@@ -272,6 +273,8 @@ class GPTConfig2Small:
                          'G', 'H', 'I', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'X', 'Z', 'a', 'b', 'c',
                          'd', 'e', 'f', 'g', 'h', 'i', 'j', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'x',
                          'y', 'z', '~', 'à', 'è', 'é', 'ì', 'ï', 'ò', 'ó', 'ù')
+    str_to_int: dict = {character: integer for integer, character in enumerate(vocabulary)}
+    int_to_str = {integer: character for integer, character in enumerate(vocabulary)}
 
 
 class Model2(nn.Module):
