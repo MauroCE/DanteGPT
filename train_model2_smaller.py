@@ -17,9 +17,9 @@ if __name__ == "__main__":
     config.dropout_prop = 0.2
     config.device = 'mps' if torch.backends.mps.is_available() else 'cpu'
 
-    max_iters = 5000
+    max_iters = 10000
     eval_interval = 500
-    learning_rate = 1e-3  # 3e-4
+    learning_rate = 5e-3  # 3e-4
     eval_iters = 200
 
     # Device (this works for mac silicons, use cuda for nvidia gpus)

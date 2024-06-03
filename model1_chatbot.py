@@ -46,5 +46,7 @@ class Chatbot:
 if __name__ == "__main__":
     config = GPTConfig2Small()
     config.device = 'cpu'
-    cb = Chatbot(Model2, config, path="models/model2_smaller.pth")
+    # make it smaller
+    config.n_emb = 100
+    cb = Chatbot(Model2, config, path="models_heroku/model2_smaller2.pth")
     cb.chat()
