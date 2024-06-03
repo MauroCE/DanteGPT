@@ -13,7 +13,7 @@ class Chatbot:
         self.config = config
         # Model
         self.model = model(self.config)
-        state_dict = torch.load(path)
+        state_dict = torch.load(path, map_location=self.config.device)
         self.model.load_state_dict(state_dict)
         self.model.load_state_dict(state_dict)
         self.model.eval()  # Set the model to evaluation mode
