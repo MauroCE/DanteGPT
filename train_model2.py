@@ -12,7 +12,7 @@ if __name__ == "__main__":
     config = GPTConfig2()
     config.device = 'mps' if torch.backends.mps.is_available() else 'cpu'
 
-    max_iters = 10000
+    max_iters = 30000
     eval_interval = 500
     learning_rate = 1e-2  # This learning rate seems good
     eval_iters = 200
@@ -89,14 +89,14 @@ if __name__ == "__main__":
         optimizer.step()
 
     # Save model
-    torch.save(model.state_dict(), "models/model2.pth")
-    with open("losses/model2_training_{}.pkl".format(eval_interval), "wb") as file:
+    torch.save(model.state_dict(), "models/model2_{}_{}.pth".format(eval_interval, max_iters))
+    with open("losses/model2_training_{}_{}.pkl".format(eval_interval, max_iters), "wb") as file:
         pickle.dump(training_losses, file)
-    with open("losses/model2_validation_{}.pkl".format(eval_interval), "wb") as file:
+    with open("losses/model2_validation_{}_{}.pkl".format(eval_interval, max_iters), "wb") as file:
         pickle.dump(validation_losses, file)
 
     # Save final time
     total_time = time.time() - start_time
     print("Total time: ", total_time)
-    with open("timings/model2_{}.pkl".format(eval_interval), "wb") as file:
+    with open("timings/model2_{}_{}.pkl".format(eval_interval, max_iters), "wb") as file:
         pickle.dump([total_time], file)
