@@ -89,14 +89,14 @@ if __name__ == "__main__":
         optimizer.step()
 
     # Save model
-    torch.save(model.state_dict(), "models/model2_smaller2.pth")
-    with open("losses/model2_smaller2_training_{}.pkl".format(eval_interval), "wb") as file:
+    torch.save(model.state_dict(), "models/model2.pth")
+    with open("losses/model2_training_{}.pkl".format(eval_interval), "wb") as file:
         pickle.dump(training_losses, file)
-    with open("losses/model2_smaller2_validation_{}.pkl".format(eval_interval), "wb") as file:
+    with open("losses/model2_validation_{}.pkl".format(eval_interval), "wb") as file:
         pickle.dump(validation_losses, file)
 
     # Save final time
     total_time = time.time() - start_time
     print("Total time: ", total_time)
-    with open("timings/model2_smaller2_{}.pkl".format(eval_interval), "wb") as file:
+    with open("timings/model2_{}.pkl".format(eval_interval), "wb") as file:
         pickle.dump([total_time], file)
