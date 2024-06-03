@@ -1,25 +1,20 @@
 import time
 import torch
 import pickle
-from gpt import Model2, estimate_loss, get_batch, GPTConfig1
+from gpt import Model2, estimate_loss, get_batch
+from gpt_configurations import GPTConfig2
 
 
 if __name__ == "__main__":
     torch.manual_seed(333)  # reproducibility
 
     # Settings
-    config = GPTConfig1  # Use same configuration as Model1
-    config.batch_size = 64
-    config.context_size = 256
-    config.n_emb = 100
-    config.num_layers = 4
-    config.num_heads = 4
-    config.dropout_prop = 0.2
+    config = GPTConfig2()
     config.device = 'mps' if torch.backends.mps.is_available() else 'cpu'
 
     max_iters = 10000
     eval_interval = 500
-    learning_rate = 1e-2  #5e-3  # 3e-4
+    learning_rate = 1e-2  # This learning rate seems good
     eval_iters = 200
 
     # Device (this works for mac silicons, use cuda for nvidia gpus)
