@@ -1,5 +1,5 @@
 # Dante GPT
-A transformer-based language model trained on Dante Alighieri's Divina Commedia. The model is strongly inspired by Andrej Karpathy's nanoGPT, which is itself a simplified version of GPT-2.
+Transformer-based LLMs trained on Dante Alighieri's Divina Commedia.
 
 <p align="center">
 <img src="images/dante_robot.png" width="500">
@@ -44,17 +44,14 @@ Currently, the model is overfitting, which makes sense given a lot of the design
 </p>
 
 ### Model 2
-The second model differs from Model1 in only two ways: it uses a GeLU activation function and it implements Flash attention. Importantly, inside flash attention it also uses a dropout of `0.2` at training time.
+The overfitting of Model1 suggests that the model is over-parametrized (at a later stage, I will explore double-descent). Model2 is a smaller model and also has some architectural differences: It uses a GeLU activation function, and it implements Flash attention. Importantly, inside flash attention it also uses a dropout of `0.2` at training time.
 
 <p align="center">
 <img src="images/model2.png" width="650">
 </p>
 
-Model 2 is also over-fitting. I have trained exactly the same architecture but smaller model, with `context_size = 256`, `n_emb = 192`, `num_layers = 4`, and `num_heads = 4`. Training this model over 5000 iterations did not overfit as much and achieved lower final test loss.
+Model2 uses `n_emb=100`, `4` transformer blocks with `4` heads each, the rest of the model is identical.
 
-<p align="center">
-<img src="images/model2_smaller_train_val_losses.png" width="500">
-</p>
 
 # Moving Forward
 
