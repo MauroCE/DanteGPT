@@ -23,8 +23,8 @@ def generate():
         return jsonify({'error': 'Input exceeds the maximum limit of 256 characters.'}), 400
 
     context = torch.tensor(config.str2int(user_input), device=config.device).view(1, -1)
-    response = model.generate(context, device=config.device, max_new_tokens=150,
-                              min_new_tokens=10, context_size=config.context_size,
+    response = model.generate(context, device=config.device, max_new_tokens=250,
+                              min_new_tokens=15, context_size=config.context_size,
                               idx_to_char=config.int_to_str)
     response = response.replace("\n", "<br>")
     return jsonify({'response': response})

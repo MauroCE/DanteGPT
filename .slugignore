@@ -4,7 +4,11 @@ images/
 losses/model1_training.pkl
 losses/model1_validation.pkl
 models/model1.pth
+models/
 timings/
 download_data.ipynb
 plot_losses.py
 train_model1.py
+dante-gpt-venv/
+model1_chatbot.py
+LICENSE
