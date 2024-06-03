@@ -2,19 +2,6 @@ from flask import Flask, request, jsonify, render_template
 import torch
 from gpt import Model2
 from gpt_configurations import GPTConfig2
-import requests
-
-
-def download_and_load_weights(url="https://maurocamaraescudero.netlify.app/model2.pkl"):
-    response = requests.get(url)
-    if response.status_code == 200:
-        # Write them down
-        return response.content
-        # with open(save_path, 'wb') as f:
-        #     f.write(response.content)
-
-    else:
-        raise Exception(f"Failed to download weights from {url}")
 
 
 app = Flask(__name__)
@@ -46,15 +33,10 @@ if __name__ == '__main__':
     config = GPTConfig2()
     config.device = 'cpu'
     # Options for weights
-    download_from_website = True
-    if download_from_website:
-        weights = download_and_load_weights()
-    else:
-        path = "models_heroku/model2.pth"
-        weights = torch.load(path, map_location=config.device)
+    path = "models_heroku/model2.pth"
     # Load model
     model = Model2(config)
-    model.load_state_dict(weights)
+    model.load_state_dict(torch.load(path, map_location=config.device))
     model.eval()  # Set the model to evaluation mode, not training
     # Launch the app
     app.run(host='0.0.0.0', port=8080, debug=False)
