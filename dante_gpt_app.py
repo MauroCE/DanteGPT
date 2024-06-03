@@ -33,7 +33,7 @@ if __name__ == '__main__':
     config = GPTConfig2()
     config.device = 'cpu'
     # Load model
-    path = "models_heroku/model2_smaller2.pth"
+    path = "models_heroku/model2.pth"
     model = Model2(config)
     model.load_state_dict(torch.load(path, map_location=config.device))
     model.eval()  # Set the model to evaluation mode, not training
