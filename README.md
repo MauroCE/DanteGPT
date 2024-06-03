@@ -43,6 +43,13 @@ Currently, the model is overfitting, which makes sense given a lot of the design
 <img src="images/model1_train_val_losses.png" height="300">
 </p>
 
+### Model 2
+The second model differs from Model1 in only two ways: it uses a GeLU activation function and it implements Flash attention.
+
+<p align="center">
+<img src="images/model2.png" width="650">
+</p>
+
 # Moving Forward
 
 1. Implement [FlashAttention](https://arxiv.org/abs/2205.14135), which computes *exact* self-attention but can bring important speed ups. See [HuggingFace](https://huggingface.co/docs/text-generation-inference/en/conceptual/flash_attention) for a simple, quick explanation.
