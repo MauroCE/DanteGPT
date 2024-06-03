@@ -37,6 +37,7 @@ class Chatbot:
             indices = self.model.generate(context, device=self.config.device, max_new_tokens=200,
                                           context_size=self.config.context_size)[0].tolist()
             output_text = self.int2str(indices)
+            # Trim to the latest
             print(f"DanteGPT: {output_text[len(user_input):]}")
 
 

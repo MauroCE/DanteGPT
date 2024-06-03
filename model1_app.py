@@ -24,11 +24,12 @@ def generate():
         return jsonify({'error': 'Input exceeds the maximum limit of 256 characters.'}), 400
 
     context = torch.tensor(chatbot.str2int(user_input), device=config.device).view(1, -1)
-    indices = chatbot.model.generate(context, device=config.device, max_new_tokens=200,
+    indices = chatbot.model.generate(context, device=config.device, max_new_tokens=500,
                                      context_size=config.context_size)[0].tolist()
     output_text = chatbot.int2str(indices)
-    response = output_text[len(user_input):]
-
+    response = output_text[len(user_input):]  # remove the input text
+    # end the output at the right-most full stop
+    response = response[:response.rfind(".")+1]
     return jsonify({'response': response})
 
 
