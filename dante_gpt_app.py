@@ -21,7 +21,11 @@ def generate():
 
     if len(user_input) > 256:
         return jsonify({'error': 'Input exceeds the maximum limit of 256 characters.'}), 400
-
+    # neither w nor k are in the vocabulary so remove them if used
+    char_in_vocab = [char in config.vocabulary for char in user_input]
+    user_input = "".join([char for char, in_vocab in zip(user_input, char_in_vocab) if in_vocab])
+    if len(user_input) == 0:
+        user_input = "\n"
     context = torch.tensor(config.str2int(user_input), device=config.device).view(1, -1)
     response = model.generate(context, device=config.device, max_new_tokens=250,
                               min_new_tokens=15, context_size=config.context_size,
